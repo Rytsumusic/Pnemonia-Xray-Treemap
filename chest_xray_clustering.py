@@ -3,22 +3,32 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
-from keras import layers, models, preprocessing
-model = models.load_model('./models/Xception.hdf5')
-embedding_output = model.get_layer('global_average_pooling2d').output
-embedding_model = model(inputs=model.input, outputs=embedding_output)
+import rich.progress
+from keras import layers, models, preprocessing, applications
 
-# Load and preprocess the images
-image_files = glob.glob('path_to_your_images/*/*')  
-images = []
-for f in image_files:
-    image = preprocessing.image.load_img(f, target_size=(299, 299))  # adjust target_size to match your model's input size
-    image = preprocessing.image.img_to_array(image)
-    image = np.expand_dims(image, axis=0)
-    image = image / 255.0
-    images.append(image)
+model = applications.VGG16(weights='imagenet', include_top=False)
+image_paths = glob.glob('/chest_xray/test/**/*jpeg',recursive=True)
 
-# Create the embeddings
-embeddings = embedding_model.predict(np.vstack(images))
+embeddings = []
 
+with rich.progress.Progress() as progress:
+    task = progress.add_task("[red]Embedding images...", total=len(image_paths))
+    try:
+
+        for image_path in image_paths:
+            try:
+                print(f"Processing image {image_path}")
+                image = preprocessing.image.load_img(image_path, target_size=(224, 224))
+                image = preprocessing.image.img_to_array(image)
+                image = np.expand_dims(image, axis=0)
+                image = applications.vgg16.preprocess_input(image)
+                embedding = model.predict(image)
+                embeddings.append(embedding)
+                progress.update(task, advance=1)
+                progress.refresh()
+                print(embedding.shape)
+            except Exception as e:
+                print(f"Failed to process image {image_path}. Error: {e}")
+    except Exception as e:
+        print(f"Error occurred: {e}")
 
