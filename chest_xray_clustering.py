@@ -87,6 +87,7 @@ squarify.plot(sizes=normalized_sizes, label=cluster_labels, alpha=0.8, ax=ax)
   #  img = np.array(img)
    # ax.imshow(img, extent=(centroid[0]-0.25, centroid[0]+0.25, centroid[1]-0.25, centroid[1]+0.25))
     #ax.scatter(centroid[0], centroid[1])
+
 plt.axis('off')
 plt.title('Cluster Treemap')
 plt.savefig('treemap.png', dpi=1200)
