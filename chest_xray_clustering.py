@@ -93,7 +93,8 @@ labels = [''] * len(medoids)
 for i, medoid in enumerate(medoids):
     img = preprocessing.image.load_img(image_paths[medoid], target_size=(500, 500))
     img = np.array(img)
-
+    medoid_name = image_paths[medoid].split('/')[-1]
+    labels[i] = 'Medoid {}: {}'.format(i, medoid_name)
     ax.imshow(img, extent=(0, 1, 0, 1))
     ax.text(0.5, 0.5, labels[i], ha='center', va='center', fontsize=10, color='white')
     labels[i] = 'Medoid {}: {}'.format(i, medoid)
