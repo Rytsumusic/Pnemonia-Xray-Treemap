@@ -79,12 +79,6 @@ ax.set_title("Clustering with medoids labeled")
 fig.savefig("Clustering with medoids labeled", dpi=1200)
 plt.show()
 
-
-
-
-
-
-
 # Treemap
 fig, ax = plt.subplots(figsize=(10, 10))
 sizes = [1] * len(medoids)  
@@ -94,12 +88,14 @@ for i, medoid in enumerate(medoids):
     img = preprocessing.image.load_img(image_paths[medoid], target_size=(500, 500))
     img = np.array(img)
     medoid_name = image_paths[medoid].split('/')[-1]
-    labels[i] = 'Medoid {}: {}'.format(i, medoid_name)
-    ax.imshow(img, extent=(0, 1, 0, 1))
-    ax.text(0.5, 0.5, labels[i], ha='center', va='center', fontsize=10, color='white')
     labels[i] = 'Medoid {}: {}'.format(i, medoid)
+    #ax.imshow(img, extent=(0, 1, 0, 1))
+    #ax.text(0.5, 0.5, labels[i], ha='center', va='center', fontsize=10, color='white')
+    labels[i] = 'Medoid {}: {}'.format(i, medoid_name,medoid)
+    #ax.text(0.5, 0.45, medoid_name, ha='center', va='center', fontsize=10, color='white')
 
 squarify.plot(sizes=sizes, label=labels, color=colors, alpha=0.8)
 plt.axis('off')
-#plt.savefig('treemap.png', dpi=1200)
+plt.title('Treemap of medoids')
+plt.savefig('treemap.png', dpi=1200)
 plt.show()
