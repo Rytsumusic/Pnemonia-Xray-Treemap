@@ -88,16 +88,17 @@ plt.show()
 # Treemap
 fig, ax = plt.subplots(figsize=(10, 10))
 sizes = [1] * len(medoids)  
-colors = ['blue', 'green', 'red', 'yellow', 'orange'][:len(medoids)]  # Add more colors if needed
+colors = ['blue', 'green', 'red', 'yellow', 'orange'][:len(medoids)]
 labels = [''] * len(medoids)  
 for i, medoid in enumerate(medoids):
-    img = preprocessing.image.load_img(image_paths[medoid], target_size=(224, 224))
+    img = preprocessing.image.load_img(image_paths[medoid], target_size=(500, 500))
     img = np.array(img)
+
     ax.imshow(img, extent=(0, 1, 0, 1))
-    labels[i] = 'Medoid {}'.format(i)
+    ax.text(0.5, 0.5, labels[i], ha='center', va='center', fontsize=10, color='white')
+    labels[i] = 'Medoid {}: {}'.format(i, medoid)
+
 squarify.plot(sizes=sizes, label=labels, color=colors, alpha=0.8)
-
 plt.axis('off')
-
-plt.savefig('treemap.png', dpi=1200)
+#plt.savefig('treemap.png', dpi=1200)
 plt.show()
